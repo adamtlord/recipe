@@ -1,0 +1,10 @@
+.DS_Store
+*.pyc
+__pycache__/
+.vscode
+*.log
+*.tmp
+*.db
+.env
+backend/.venv
+data/
