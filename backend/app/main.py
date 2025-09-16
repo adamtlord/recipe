@@ -72,11 +72,10 @@ async def generate_recipes(request: RecipeRequest):
 
 @app.get("/foods", response_model=List[Food])
 async def search_foods(q: str | None = None):
-    print("search foods", q)
     if not q or len(q) < 3:
         raise HTTPException(
             status_code=400, detail="Enter at least three chars to search"
         )
-    print("get results")
+
     results = select_foods_containing_substring(q)
     return results
