@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "PressStart2P";
+  src: url("./assets/font/PressStart2P-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark,
+    synthwave;
+}
+@theme {
+  --font-pressstart: "PressStart2P", sans-serif;
+}
