@@ -11,7 +11,7 @@ function App() {
   const [apiReady, setApiReady] = useState(false);
   const [apiFailed, setApiFailed] = useState(false);
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
+    let timeoutId: number | null = null;
     let isCancelled = false;
 
     const checkApiReady = async () => {
