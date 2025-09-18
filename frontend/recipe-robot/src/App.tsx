@@ -27,7 +27,7 @@ function App() {
     };
 
     const startTime = Date.now();
-    const maxDuration = 10000; // 10 seconds
+    const maxDuration = 60000; // 1 minute
     const retryInterval = 2000; // 2 seconds
 
     const retryCheck = async () => {

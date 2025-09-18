@@ -32,6 +32,7 @@ app = FastAPI(title="Recipe Suggestion App", version="1.0.0", lifespan=lifespan)
 
 origins = [
     "http://localhost:5173",
+    "https://recipe-robot-ui.onrender.com",
 ]
 
 app.add_middleware(
