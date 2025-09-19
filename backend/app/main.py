@@ -1,93 +1,57 @@
-import logging
 from contextlib import asynccontextmanager
-from typing import List
 
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from .models import (
-    Food,
-    RecipeRequest,
-    RecipeResponse,
-    clear_db_and_tables,
-    create_db_and_tables,
-    select_foods_containing_substring,
-)
-from .recipe import client, generate_content, generate_recipe_query
+from fastapi import FastAPI
 
-load_dotenv()
+from .api.v1 import foods, recipes
+from .core.config import settings
+from .core.database import clear_db_and_tables, create_db_and_tables
+from .core.security import setup_cors
+from .utils.logger import setup_logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Setup logging
+setup_logging()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Application lifespan manager for startup and shutdown events."""
+    # Startup
     create_db_and_tables()
     yield
+    # Shutdown
     clear_db_and_tables()
 
 
-app = FastAPI(title="Recipe Suggestion App", version="1.0.0", lifespan=lifespan)
+def create_app() -> FastAPI:
+    """Create and configure the FastAPI application."""
+    app = FastAPI(
+        title=settings.APP_TITLE,
+        version=settings.APP_VERSION,
+        lifespan=lifespan
+    )
 
-origins = [
-    "http://localhost:5173",
-    "https://recipe-robot-ui.onrender.com",
-]
+    # Setup CORS
+    setup_cors(app)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    # Include API routers
+    app.include_router(recipes.router, prefix="/api/v1")
+    app.include_router(foods.router, prefix="/api/v1")
 
-@app.get("/")
-async def root():
-    return {"message": "Recipe Suggestion API with Gemini Integration"}
+    # Health check endpoints
+    @app.get("/")
+    async def root():
+        return {"message": "Recipe Suggestion API with Gemini Integration"}
 
+    @app.get("/health")
+    async def health_check():
+        from .services.recipe_service import client
+        return {
+            "status": "healthy",
+            "api_available": hasattr(client.models, "generate_content"),
+        }
 
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "api_available": hasattr(client.models, "generate_content"),
-    }
-
-
-@app.post("/recipes/generate", response_model=RecipeResponse)
-async def generate_recipes(request: RecipeRequest):
-    if not request.ingredients:
-        raise HTTPException(
-            status_code=400, detail="At least one ingredient is required"
-        )
-
-    try:
-        query = generate_recipe_query(request)
-    except Exception as e:
-        logger.error(f"Query generation failed: {e}")
-        raise HTTPException(
-            status_code=400, detail=f"Failed to generate query: {str(e)}"
-        )
-
-    try:
-        response = generate_content(query)
-        return RecipeResponse(recipes=response)
-
-    except Exception as e:
-        logger.error(f"Recipe generation failed: {e}")
-        raise HTTPException(
-            status_code=500, detail=f"Failed to generate recipes: {str(e)}"
-        )
+    return app
 
 
-@app.get("/foods", response_model=List[Food])
-async def search_foods(q: str | None = None):
-    if not q or len(q) < 3:
-        raise HTTPException(
-            status_code=400, detail="Enter at least three chars to search"
-        )
-
-    results = select_foods_containing_substring(q)
-    return results
+# Create the app instance
+app = create_app()
