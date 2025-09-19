@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
-import robotImg from './assets/img/lunchtime.gif';
+import robotImg from '@/assets/img/lunchtime.gif';
 import {
   Header,
   ApiStatusDisplay,
   IngredientForm,
   LoadingDisplay,
   RecipeList,
-} from './components';
-import { useApiStatus, useIngredients, useRecipes } from './hooks';
+} from '@/components';
+import { useApiStatus, useIngredients, useRecipes } from '@/hooks';
 
 function App() {
   const { apiStatus } = useApiStatus();

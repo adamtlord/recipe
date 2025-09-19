@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { apiService } from '../services/api';
-import type { UseRecipesReturn, Recipe } from '../types';
+import { apiService } from '@/services/api';
+import type { UseRecipesReturn, Recipe } from '@/types';
 
 export const useRecipes = (): UseRecipesReturn => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

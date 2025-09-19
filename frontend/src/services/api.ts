@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse, type AxiosError } from 'axios';
-import type { RecipeRequest, RecipeResponse, Food } from '../types';
-import { API_CONFIG, API_DEFAULTS } from '../constants';
+import type { RecipeRequest, RecipeResponse, Food } from '@/types';
+import { API_CONFIG, API_DEFAULTS } from '@/constants';
 
 // Create axios instance with base configuration
 const apiClient = axios.create({

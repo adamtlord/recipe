@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { apiService } from '../services/api';
-import type { ApiStatus } from '../types';
-import { API_CONFIG } from '../constants';
+import { apiService } from '@/services/api';
+import type { ApiStatus } from '@/types';
+import { API_CONFIG } from '@/constants';
 
 export const useApiStatus = () => {
   const [apiStatus, setApiStatus] = useState<ApiStatus>({

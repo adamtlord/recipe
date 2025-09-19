@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tooltip } from 'react-tooltip';
-import { IngredientInput } from '../ui/IngredientInput';
-import { IngredientBadge } from '../ui/IngredientBadge';
-import type { UseIngredientsReturn } from '../../types';
-import { UI_MESSAGES, APP_CONFIG } from '../../constants';
-import { generateKey } from '../../utils';
+import { IngredientInput } from '@/components/ui/IngredientInput';
+import { IngredientBadge } from '@/components/ui/IngredientBadge';
+import type { UseIngredientsReturn } from '@/types';
+import { UI_MESSAGES, APP_CONFIG } from '@/constants';
+import { generateKey } from '@/utils';
 
 interface IngredientFormProps {
   ingredients: UseIngredientsReturn['ingredients'];
