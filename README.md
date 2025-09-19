@@ -1,4 +1,6 @@
-# Recipe Robot 🤖
+# Recipe Robot
+
+![lunchtime](https://github.com/user-attachments/assets/618676fc-7295-4737-be41-1936c2cf7544)
 
 An AI-powered recipe generation application that creates delicious recipes based on ingredients you have on hand. Built with FastAPI (Python) backend and React (TypeScript) frontend.
 
